@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'
+    xmlns:='http://www.w3.org/1999/xhtml'
+    xmlns:f='http://xmlns.jcp.org/jsf/core'
+    xmlns:h='http://xmlns.jcp.org/jsf/html'
+>
+    <h:head> <!-- h: is nessesary if you want autoload javascript code in head -->
+        <title>BUAHAHA</title>
+    </h:head>
+    <h:body> <!-- h: is nessesary if you want autoload javascript code at body end -->
+        <h1>buajajajajaja</h1>
+        <h:form> <!-- JSF will automatically include the view state in a hidden input field. -->
+<!--             <h:outputLabel for='input' value='#{helloWorld.output}' /> if not tag take care of figuring out the actual ID of the target input element. -->
+            <h:inputText id='input' value='#{helloWorld.input}' /> <!-- get and set the value in the bean property specified in the value attribute. -->
+            <h:commandButton value='Submit'
+                action='#{helloWorld.submit}'>
+                <f:ajax execute='@form' render=':output' /> <!-- The execute attribute indicates that the entire <h:form> must be processed on submit and the render attribute indicates that the tag identified by id='output' must be updated on complete of the Ajax submit. -->
+            </h:commandButton>
+        </h:form>
+        <h:outputText id='output' value='#{helloWorld.output}' />
+    </h:body>
+</html>
+<!-- It must be explicitly mentioned that in case of
+ Payara and GlassFish servers this is best to be done 
+ while the server is already started. When removing a 
+ project while the server is shut down, it may still linger
+  around in the server s deployment folder. That s just
+   GlassFish�s own quirk. For example, in the case of WildFly
+    and Tomcat servers, this is not necessary. -->

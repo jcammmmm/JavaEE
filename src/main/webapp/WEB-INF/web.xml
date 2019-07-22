@@ -16,4 +16,12 @@
     <servlet-name>facesServlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>hello.xhtml</welcome-file>
+  </welcome-file-list>
 </web-app>
+    
+    <!-- The '/project' part is by convention
+     the name of the Eclipse project. This is
+      in Servlet terms called the “context path”
+       and obtainable by HttpServletRequest#getContextPath() -->
