@@ -4,11 +4,11 @@
 	xmlns:h='http://xmlns.jcp.org/jsf/html'>
 <h:head>
 	<!-- h: is nessesary if you want autoload javascript code in head -->
-	<title>BUAHAHA</title>
+	<title>Country App</title>
 </h:head>
 <h:body>
 	<!-- h: is nessesary if you want autoload javascript code at body end -->
-	<h1>buajajajajaja</h1>
+	<h1>Beligerant Country Data</h1>
 	<h:form>
 		<!-- JSF will automatically include the view state in a hidden input field. -->
 		<!--<h:outputLabel for='input' value='#{helloWorld.output}' />  if not tag take care of figuring out the actual ID of the target input element. -->
@@ -21,29 +21,33 @@
 	</h:form>
 	<h:outputText id='output' value='#{helloWorld.output}' />
 
-	<h:dataTable value="#{userData.employees}" var="employee"
-		styleClass="employeeTable" headerClass="employeeTableHeader"
-		rowClasses="employeeTableOddRow,employeeTableEvenRow">
-
+	<h:dataTable value="#{displayCountries.countries}" var="country"
+		styleClass="countryTable" headerClass="countryTableHeader"
+		rowClasses="countryTableOddRow,countryTableEvenRow">
 		<h:column>
 			<f:facet name="header">Name</f:facet>    				
-      #{employee.name}
-   </h:column>
+		    #{country.name}
+	    </h:column>
 
 		<h:column>
-			<f:facet name="header">Department</f:facet>
-      #{employee.department}
-   </h:column>
-
+			<f:facet name="header">Population</f:facet>
+			#{country.population}
+	    </h:column>
+	    
 		<h:column>
-			<f:facet name="header">Age</f:facet>
-      #{employee.age}
-   </h:column>
-
+			<f:facet name="header">Extension</f:facet>
+      		#{country.extension}
+	    </h:column>
+  
 		<h:column>
-			<f:facet name="header">Salary</f:facet>
-      #{employee.salary}
-   </h:column>
+			<f:facet name="header">Government Type</f:facet>
+			#{country.govType}
+	    </h:column>
+	    
+<!-- 	    <h:column>
+			<f:facet name="header">Active Wars</f:facet>
+			#{country.activeWars[0]}
+	    </h:column> -->
 	</h:dataTable>
 </h:body>
 </html>

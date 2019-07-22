@@ -16,6 +16,7 @@ public class HelloWorld {
 			double d = i*i;
 			d = d + d;
 		}
+		
 	}
 	
 	public void echo() {
