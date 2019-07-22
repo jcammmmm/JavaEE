@@ -3,7 +3,6 @@ package com.example.project.view;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -11,6 +10,8 @@ import java.io.Serializable;
 @Named
 @SessionScoped
 public class DisplayCountries implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Country> countries;
 	
 	public DisplayCountries() {
@@ -34,5 +35,10 @@ public class DisplayCountries implements Serializable {
 
 	public ArrayList<Country> getCountries() {
 		return countries;
+	}
+	
+	public String editCountry(Country c) {
+		System.out.println(c.getName());
+		return "/editCountry.xhtml?faces-redirect=true";
 	}
 }

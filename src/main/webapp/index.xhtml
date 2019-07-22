@@ -10,45 +10,40 @@
 	<!-- h: is nessesary if you want autoload javascript code at body end -->
 	<h1>Beligerant Country Data</h1>
 	<h:form>
-		<!-- JSF will automatically include the view state in a hidden input field. -->
-		<!--<h:outputLabel for='input' value='#{helloWorld.output}' />  if not tag take care of figuring out the actual ID of the target input element. -->
-		<h:inputText id='input' value='#{helloWorld.input}' />
-		<!-- get and set the value in the bean property specified in the value attribute. -->
-		<h:commandButton value='Submit' action='#{helloWorld.submit}'>
-			<f:ajax execute='@form' render=':output' />
-			<!-- The execute attribute indicates that the entire <h:form> must be processed on submit and the render attribute indicates that the tag identified by id='output' must be updated on complete of the Ajax submit. -->
-		</h:commandButton>
-	</h:form>
-	<h:outputText id='output' value='#{helloWorld.output}' />
-
-	<h:dataTable value="#{displayCountries.countries}" var="country"
-		styleClass="countryTable" headerClass="countryTableHeader"
-		rowClasses="countryTableOddRow,countryTableEvenRow">
-		<h:column>
-			<f:facet name="header">Name</f:facet>    				
-		    #{country.name}
-	    </h:column>
-
-		<h:column>
-			<f:facet name="header">Population</f:facet>
-			#{country.population}
-	    </h:column>
-	    
-		<h:column>
-			<f:facet name="header">Extension</f:facet>
-      		#{country.extension}
-	    </h:column>
-  
-		<h:column>
-			<f:facet name="header">Government Type</f:facet>
-			#{country.govType}
-	    </h:column>
-	    
+		<h:dataTable value="#{displayCountries.countries}" var="country"
+			styleClass="countryTable" headerClass="countryTableHeader"
+			rowClasses="countryTableOddRow,countryTableEvenRow">
+			<h:column>
+				<f:facet name="header">Name</f:facet>    				
+			    <h:outputText value="#{country.name}" />
+		    </h:column>
+	
+			<h:column>
+				<f:facet name="header">Population</f:facet>
+				#{country.population}
+		    </h:column>
+		    
+			<h:column>
+				<f:facet name="header">Extension</f:facet>
+	      		#{country.extension}
+		    </h:column>
+	  
+			<h:column>
+				<f:facet name="header">Government Type</f:facet>
+				#{country.govType}
+		    </h:column>
+		    
+		    <h:column>
+				<f:facet name="header">Edit</f:facet>
+				<h:commandButton value='Edit' action='#{displayCountries.editCountry(country)}'></h:commandButton>
+		    </h:column>
+	
 <!-- 	    <h:column>
 			<f:facet name="header">Active Wars</f:facet>
 			#{country.activeWars[0]}
 	    </h:column> -->
 	</h:dataTable>
+</h:form>
 </h:body>
 </html>
 <!-- It must be explicitly mentioned that in case of

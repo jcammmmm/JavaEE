@@ -1,11 +1,6 @@
 package com.example.project.view;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import java.util.ArrayList;
 
-@Named
-@RequestScoped
 public class Country {
 	private String name;
 	private int population;
