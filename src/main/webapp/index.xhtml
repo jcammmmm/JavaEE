@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang='en' xmlns:='http://www.w3.org/1999/xhtml'
 	xmlns:f='http://xmlns.jcp.org/jsf/core'
-	xmlns:h='http://xmlns.jcp.org/jsf/html'>
+	xmlns:h='http://xmlns.jcp.org/jsf/html'
+	
+	xmlns:c='http://xmlns.jcp.org/jsp/jstl/core'> <!-- for <c: tags... -->
 <h:head>
 	<!-- h: is nessesary if you want autoload javascript code in head -->
 	<title>Country App</title>
@@ -9,41 +11,55 @@
 <h:body>
 	<!-- h: is nessesary if you want autoload javascript code at body end -->
 	<h1>Beligerant Country Data</h1>
-	<h:form>
-		<h:dataTable value="#{displayCountries.countries}" var="country"
-			styleClass="countryTable" headerClass="countryTableHeader"
-			rowClasses="countryTableOddRow,countryTableEvenRow">
+	<h:form id="formTable">
+		<h:dataTable value="#{displayCountries.countries}" var="country" id="mainDataTable">
 			<h:column>
-				<f:facet name="header">Name</f:facet>    				
-			    <h:outputText value="#{country.name}" />
+				<f:facet name="header" >Name</f:facet>    				
+			    <h:outputText value="#{country.name}" id="cName"/>
 		    </h:column>
 	
 			<h:column>
 				<f:facet name="header">Population</f:facet>
-				#{country.population}
+				<h:outputText value="#{country.population}" id="cPop"/>
 		    </h:column>
 		    
 			<h:column>
 				<f:facet name="header">Extension</f:facet>
-	      		#{country.extension}
+	      		<h:outputText value="#{country.extension}" id="cExt"/>
 		    </h:column>
 	  
 			<h:column>
 				<f:facet name="header">Government Type</f:facet>
-				#{country.govType}
+				<h:outputText value="#{country.govType}" id="cGov"/>
 		    </h:column>
 		    
 		    <h:column>
-				<f:facet name="header">Edit</f:facet>
-				<h:commandButton value='Edit' action='#{displayCountries.editCountry(country)}'></h:commandButton>
+				<f:facet name="header">Edit</f:facet> 
+				<h:commandButton value='Edit' action='#{displayCountries.updateCountry(country)}' id="bEdit">
+					<!-- In order to the button changes the view, the data table must be
+						 enclosed within a <h:form> tag. Otherwise, when you click the 
+						 button the page will not chage. -->
+				</h:commandButton>
+		    </h:column>
+		    
+			<h:column>
+				<f:facet name="header">Delete</f:facet> 
+				<h:commandButton value='Delete' action='#{displayCountries.deleteCountry(country)}' id="bDel">
+					<!-- In order to the button changes the view, the data table must be
+						 enclosed within a <h:form> tag. Otherwise, when you click the 
+						 button the page will not chage. -->
+				</h:commandButton>
 		    </h:column>
 	
-<!-- 	    <h:column>
-			<f:facet name="header">Active Wars</f:facet>
-			#{country.activeWars[0]}
-	    </h:column> -->
-	</h:dataTable>
-</h:form>
+			<h:column>
+				<f:facet name="header">Active Wars</f:facet>#{country.activeWars}
+	    	</h:column>
+		</h:dataTable>
+		<h:commandButton value='Create' action='#{displayCountries.createCountry}'>
+		</h:commandButton>
+
+	</h:form>
+
 </h:body>
 </html>
 <!-- It must be explicitly mentioned that in case of
@@ -53,3 +69,6 @@
   around in the server s deployment folder. That s just
    GlassFish�s own quirk. For example, in the case of WildFly
     and Tomcat servers, this is not necessary. -->
+    
+    
+<!-- <c:forEach tags cannot me nested inside forms and datatables. -->
