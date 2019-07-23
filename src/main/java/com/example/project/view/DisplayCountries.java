@@ -47,6 +47,20 @@ public class DisplayCountries implements Serializable  {
 	public String getErrorMessage() { return errorMessage; }
 	
 	public static long getNextId() { return nextId++; }
+	
+	public static ArrayList<String> getWarsAvailable() {
+		ArrayList<String> arr = new ArrayList<>();
+		for(War w : War.values())
+			arr.add(w.toString());
+		return arr;
+	}
+	
+	public static ArrayList<String> getGovsAvailable() {
+		ArrayList<String> arr = new ArrayList<>();
+		for(GovType g : GovType.values())
+			arr.add(g.toString());
+		return arr;
+	}
 
 	// ------------------------------------------------------
 	// CRUD
