@@ -1,11 +1,18 @@
 package com.example.project.view;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+
+import org.hibernate.HibernateException;
+
 import java.io.Serializable;
+
+import com.example.project.hibernate.*;
+
 
 @Named
 @SessionScoped
@@ -16,18 +23,14 @@ public class DisplayCountries implements Serializable  {
 	private static long nextId;
 	private String errorMessage;
 	private ArrayList<Country> countries;
+	private CountryDbDAO cdao;
 	
 	public DisplayCountries() {
 		currCountry = new Country();
 		nextId = 0;
 		errorMessage = "No error messages.";
 		countries = new ArrayList<>();
-		this.countries.add(new Country(getNextId(), "alpha", 1000, 1000.0, GovType.Anarchism,      this.getActiveWars(3)));
-		this.countries.add(new Country(getNextId(), "beta",  2000, 2000.0, GovType.AnarchoCapitalism, this.getActiveWars(3)));
-		this.countries.add(new Country(getNextId(), "gamma", 3000, 3000.0, GovType.Capracracy,     this.getActiveWars(3)));
-		this.countries.add(new Country(getNextId(), "delta", 4000, 4000.0, GovType.Communism,      this.getActiveWars(3)));
-		this.countries.add(new Country(getNextId(), "tetha", 5000, 5000.0, GovType.Demarchy,       this.getActiveWars(3)));
-		this.countries.add(new Country(getNextId(), "rho",   6000, 6000.0, GovType.Corporatocracy, this.getActiveWars(3)));
+		cdao = new CountryDbDAO();
 	}
 	
 	private ArrayList<War> getActiveWars(int number) {
@@ -38,7 +41,19 @@ public class DisplayCountries implements Serializable  {
 		return activeWars;
 	}
 
-	public ArrayList<Country> getCountries() { return countries; }
+	@SuppressWarnings("unchecked")
+	public ArrayList<Country> getCountries() {
+		List<CountryDb> countriesFromDB;
+		ArrayList<Country> countries = new ArrayList<>();
+		try {
+			countriesFromDB = cdao.findAll();
+			for(CountryDb cdb : countriesFromDB)
+				countries.add(cdb.normalizeCountryDb());
+		} catch (HibernateException e){
+			e.printStackTrace();
+		}
+		return countries;
+	}
 		
 	public Country getCurrCountry() { return currCountry; }
 
@@ -80,16 +95,20 @@ public class DisplayCountries implements Serializable  {
 	}
 	
 	public void deleteCountry(Country c) {
-		countries.remove(c);
+		cdao.delete(c.formatToSave());
 	}
 	
 	public String saveCountry() {
-		int idx = countries.indexOf(currCountry);
-		System.out.println(currCountry.getName());
-		if(idx != -1)
-			countries.set(idx, currCountry);
-		else
-			countries.add(currCountry);
+		System.out.println(currCountry.toString());
+		CountryDb cDb = currCountry.formatToSave();
+		long idToCommit = getId();
+		if(idToCommit > 0) {
+			System.out.println("[DisplayCountries.saveCountry() retr id was. " + getId());
+			cDb.setCid(idToCommit + 1);
+		} else
+			System.out.println("[DisplayCountries.saveCountry() index was -1");
+		System.out.println("[DisplayCountry.saveCountry] Saving country with name: " + cDb.toString());
+		cdao.save(cDb);
 		return "/index.xhtml";
 	}
 	// ------------------------------------------------------
@@ -107,5 +126,24 @@ public class DisplayCountries implements Serializable  {
 			if(c.getName().equals(name))
 				return false;
 		return true;
+	}
+	
+	public void initDbinMemory() {
+		countries = new ArrayList<>();
+		this.countries.add(new Country(getNextId(), "alpha", 1000, 1000.0, GovType.Anarchism,      this.getActiveWars(3)));
+		this.countries.add(new Country(getNextId(), "beta",  2000, 2000.0, GovType.AnarchoCapitalism, this.getActiveWars(3)));
+		this.countries.add(new Country(getNextId(), "gamma", 3000, 3000.0, GovType.Capracracy,     this.getActiveWars(3)));
+		this.countries.add(new Country(getNextId(), "delta", 4000, 4000.0, GovType.Communism,      this.getActiveWars(3)));
+		this.countries.add(new Country(getNextId(), "tetha", 5000, 5000.0, GovType.Demarchy,       this.getActiveWars(3)));
+		this.countries.add(new Country(getNextId(), "rho",   6000, 6000.0, GovType.Corporatocracy, this.getActiveWars(3)));
+	}
+	
+	public long getId() {
+		long max = -1;
+		List<CountryDb> countries = cdao.findAll();
+		for(CountryDb c : countries)
+			if(c.getCid() > max)
+				max = c.getCid();
+		return max;
 	}
 }

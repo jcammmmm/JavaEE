@@ -1,6 +1,11 @@
 package com.example.project.view;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+
+
+import com.example.project.hibernate.CountryDb;
+import com.example.project.hibernate.WarDb;
 
 // It is only a plain object, not a functional bean.
 public class Country implements Serializable {
@@ -30,26 +35,69 @@ public class Country implements Serializable {
 		this.govType = govType;
 		this.activeWars = activeWars;
 	}
+	
+	public String toString() {
+		return "[Country.toString()]: " + id + " " + name + " " + population + " " + extension + " " + govType + " " + activeWars;
+	}
+	
+	/*
+	 * This method is used in order to translate Country instances into ContryDb 
+	 * instances in order to save them in database.
+	 */
+	public CountryDb formatToSave() {
+		CountryDb cDb = new CountryDb(id, name, population, extension, govType.name(), new HashSet<WarDb>());
+		for(Object o : activeWars)
+			cDb.getWarDbs().add(new WarDb(1, cDb, o.toString()));
+//		activeWars.forEach(war -> cDb.getWarDbs().add(new WarDb(1, cDb, war.name())));
+		return cDb;
+	}
 
-	public long getId() { return id; }
+	public long getId() {
+		return id;
+	}
 
-	public String getName() { return name; }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-	public void setName(String name) { this.name = name; }
+	public String getName() {
+		return name;
+	}
 
-	public int getPopulation() { return population; }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-	public void setPopulation(int population) { this.population = population; }
+	public int getPopulation() {
+		return population;
+	}
 
-	public double getExtension() { return extension; }
+	public void setPopulation(int population) {
+		this.population = population;
+	}
 
-	public void setExtension(double extension) { this.extension = extension; }
+	public double getExtension() {
+		return extension;
+	}
 
-	public GovType getGovType() { return govType; }
+	public void setExtension(double extension) {
+		this.extension = extension;
+	}
 
-	public void setGovType(GovType govType) { this.govType = govType; }
+	public GovType getGovType() {
+		return govType;
+	}
 
-	public ArrayList<War> getActiveWars() { return activeWars; }
+	public void setGovType(GovType govType) {
+		this.govType = govType;
+	}
 
-	public void setActiveWars(ArrayList<War> activeWars) { this.activeWars = activeWars; }
+	public ArrayList<War> getActiveWars() {
+		return activeWars;
+	}
+
+	public void setActiveWars(ArrayList<War> activeWars) {
+		this.activeWars = activeWars;
+	}
+
 }

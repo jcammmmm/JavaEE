@@ -1,6 +1,6 @@
+package com.example.project.hibernate;
 // default package
 
-import com.example.project.hibernate.HibernateSessionFactory;
 import org.hibernate.Session;
 
 
